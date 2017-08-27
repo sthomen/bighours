@@ -1,0 +1,28 @@
+{
+  "name": "bighours",
+  "author": "Staffan Thomen",
+  "version": "1.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "Big Hours",
+    "uuid": "a13f23bb-b5bf-453a-941f-47b7137d9c89",
+    "sdkVersion": "3",
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite"
+    ],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [
+      "dummy"
+    ],
+    "resources": {
+      "media": []
+    }
+  }
+}
