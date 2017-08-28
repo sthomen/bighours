@@ -22,7 +22,14 @@
       "dummy"
     ],
     "resources": {
-      "media": []
+      "media": [
+        {
+          "type": "font",
+          "name": "DROID_SANS_NUMBERS_74",
+          "file": "DroidSans-Regular.ttf",
+          "characterRegex": "[:0-9]"
+        }
+      ]
     }
   }
 }

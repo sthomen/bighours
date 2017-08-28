@@ -1,16 +1,23 @@
 #include "bighours.h"
 #include "bounds.h"
+#include "utils.h"
 #include "debug.h"
 
 Window *window_main;
 
 enum {
-	HOURS=0,
-	MINUTES,
-	AMPM,
-	LINE,
-	DATE,
-	LAYERS_MAX
+	HOURS		=0,
+	MINUTES	=1,
+	AMPM		=2,
+	LINE		=3,
+	DATE		=4,
+	LAYERS_MAX=5
+};
+
+enum FontSize {
+  FONT_SMALL,
+  FONT_MEDIUM,
+  FONT_BIG
 };
 
 Layer *layers[LAYERS_MAX];
@@ -20,19 +27,19 @@ Layer *layers[LAYERS_MAX];
  * as used by the VH() and VW() macros
  */
 struct layerdata {
-	int8_t x;
-	int8_t y;
-	int8_t width;
-	int8_t height;
+	uint8_t x;
+	uint8_t y;
+	uint8_t width;
+	uint8_t height;
 	char *text;
 	size_t text_len;
-	char *font;
+	enum FontSize fontsize;
 	bool highlight;
 } layerdata[LAYERS_MAX] = {
-	{   0,   0,  60,  70, NULL,  3, FONT_BIG,	false },	/* hours */
-	{  60,   0,  40,  33, NULL,  3, FONT_MEDIUM,	true },		/* minutes */
-	{  60,  33,  40,  33, NULL,  3, FONT_MEDIUM,	true },		/* ampm */
-	{   0,  66, 100,   1, NULL,  0, NULL,		false },	/* line */
+	{   0,  15,  65,  55, NULL,  3, FONT_BIG,	false },	/* hours */
+	{  65,  30,  20,  20, NULL,  3, FONT_MEDIUM,	true },		/* minutes */
+	{  65,  45,  20,  20, NULL,  3, FONT_MEDIUM,	true },		/* ampm */
+	{   0,  66, 100,   1, NULL,  0, FONT_SMALL,		false },	/* line */
 	{   0,  67, 100,  30, NULL, 15, FONT_SMALL,	true }		/* date */
 };
 
@@ -56,7 +63,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 
 		switch (i) {
 			case HOURS:
-				fmt="%H";
+				fmt="%I";
 				break;
 			case MINUTES:
 				fmt="%M";
@@ -69,8 +76,11 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed)
 				break;
 		}
 
-		if (fmt != NULL)
+		if (fmt != NULL) {
 			strftime(layerdata[i].text, layerdata[i].text_len, fmt, tick_time);
+
+			strupper(layerdata[i].text, layerdata[i].text_len);
+		}
 	}
 
 	layer_mark_dirty(window_get_root_layer(window_main));
@@ -99,6 +109,7 @@ static void window_main_load(Window *window)
 		TextLayer *tl;
 		BitmapLayer *bl;
 		GTextAlignment tl_align=GTextAlignmentRight;
+		GFont font=NULL;
 
 		switch (i) {
 			// text layers
@@ -116,7 +127,19 @@ static void window_main_load(Window *window)
 
 				text_layer_set_background_color(tl, GColorClear);
 
-				text_layer_set_font(tl, fonts_get_system_font(layerdata[i].font));
+				switch (layerdata[i].fontsize) {
+					case FONT_SMALL:
+						font=fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD);
+						break;
+					case FONT_MEDIUM:
+						font=fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD);
+						break;
+					case FONT_BIG:
+						font=fonts_load_custom_font(resource_get_handle(RESOURCE_ID_DROID_SANS_NUMBERS_74));
+						break;
+				}
+
+				text_layer_set_font(tl, font);
 				layerdata[i].text=(char *)malloc(layerdata[i].text_len);
 				text_layer_set_text(tl, layerdata[i].text);
 
