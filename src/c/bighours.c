@@ -6,18 +6,18 @@
 Window *window_main;
 
 enum {
-	HOURS		=0,
-	MINUTES	=1,
-	AMPM		=2,
-	LINE		=3,
-	DATE		=4,
+	HOURS=0,
+	MINUTES=1,
+	AMPM=2,
+	LINE=3,
+	DATE=4,
 	LAYERS_MAX=5
 };
 
 enum FontSize {
-  FONT_SMALL,
-  FONT_MEDIUM,
-  FONT_BIG
+	FONT_SMALL,
+	FONT_MEDIUM,
+	FONT_BIG
 };
 
 Layer *layers[LAYERS_MAX];
