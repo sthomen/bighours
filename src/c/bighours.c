@@ -37,9 +37,9 @@ struct layerdata {
 	bool highlight;
 } layerdata[LAYERS_MAX] = {
 	{   0,  15,  65,  55, NULL,  3, FONT_BIG,	false },	/* hours */
-	{  65,  30,  20,  20, NULL,  3, FONT_MEDIUM,	true },		/* minutes */
-	{  65,  45,  20,  20, NULL,  3, FONT_MEDIUM,	true },		/* ampm */
-	{   0,  66, 100,   1, NULL,  0, FONT_SMALL,		false },	/* line */
+	{  65,  30,  21,  20, NULL,  3, FONT_MEDIUM,	true },		/* minutes */
+	{  65,  45,  21,  20, NULL,  3, FONT_MEDIUM,	true },		/* ampm */
+	{   0,  66, 100,   1, NULL,  0, FONT_SMALL,	false },	/* line */
 	{   0,  67, 100,  30, NULL, 15, FONT_SMALL,	true }		/* date */
 };
 
